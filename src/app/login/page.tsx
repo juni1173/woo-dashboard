@@ -25,7 +25,7 @@ export default function Login() {
         message.error("Invalid credentials.");
       }
     } catch (err) {
-      message.error("Login failed.");
+      message.error(`Login failed.${err}`);
     } finally {
       setLoading(false);
     }
