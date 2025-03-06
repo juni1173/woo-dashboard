@@ -11,6 +11,15 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  {
+    "extends": ["next/core-web-vitals"],
+    "rules": {
+      "react-hooks/exhaustive-deps": "error",
+      "@typescript-eslint/no-unused-vars": "error",
+      "@typescript-eslint/no-explicit-any": "error",
+      "@next/next/no-img-element": "warn"
+    }
+  },  
 ];
 
 export default eslintConfig;
