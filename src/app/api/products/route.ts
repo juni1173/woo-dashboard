@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
 
-const WOO_BASE_URL = "https://cretaluxurycruises.dev6.inglelandi.com/wp-json/wc/v3/products?per_page=50";
+const WOO_BASE_URL = "https://cretaluxurycruises.dev6.inglelandi.com/wp-json/wc/v3";
 const CONSUMER_KEY = "ck_cb8d0d61726f318ddc43be3407749e7a58360fe1";
 const CONSUMER_SECRET = "cs_bd55fa6bc205f402e50fdc25876032bb9c45b2ba";
 
 export async function GET() {
   try {
-    const response = await axios.get(`${WOO_BASE_URL}/products`, {
+    const response = await axios.get(`${WOO_BASE_URL}/products?per_page=50`, {
       auth: {
         username: CONSUMER_KEY,
         password: CONSUMER_SECRET,
