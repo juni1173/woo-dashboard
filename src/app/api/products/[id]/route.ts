@@ -1,13 +1,14 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 
 const WOO_BASE_URL = "https://cretaluxurycruises.dev6.inglelandi.com/wp-json/wc/v3";
 const CONSUMER_KEY = process.env.WOO_CONSUMER_KEY;
 const CONSUMER_SECRET = process.env.WOO_CONSUMER_SECRET;
 
-export async function GET(_: Request, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, context: { params: { id: string } }) {
+  const { id } = context.params; 
   try {
-    const response = await axios.get(`${WOO_BASE_URL}/products/${params.id}`, {
+    const response = await axios.get(`${WOO_BASE_URL}/products/${id}`, {
       auth: {
         username: CONSUMER_KEY!,
         password: CONSUMER_SECRET!,
