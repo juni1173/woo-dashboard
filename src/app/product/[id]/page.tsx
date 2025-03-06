@@ -9,7 +9,13 @@ import { fetchBookings, updateBooking } from "@/app/lib/api";
 
 const { Title } = Typography;
 
-export default function ProductPage({ params }: { params: { id: string } }) {
+interface PageParams {
+  params: {
+    id: string;
+  };
+}
+
+export default function ProductPage({ params }: PageParams) {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [boats] = useState<string[]>(["Lady Roula", "Sea Star", "Ocean Dream"]);
 
