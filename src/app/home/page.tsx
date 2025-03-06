@@ -26,7 +26,7 @@ export default function Home() {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch("https://example.com/api/products");
+      const res = await fetch("https://woo-dashboard-liart.vercel.app/api/products");
       if (!res.ok) {
         throw new Error("Failed to fetch products");
       }
