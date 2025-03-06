@@ -5,15 +5,17 @@ const WOO_BASE_URL = "https://cretaluxurycruises.dev6.inglelandi.com/wp-json/wc/
 const CONSUMER_KEY = process.env.WOO_CONSUMER_KEY;
 const CONSUMER_SECRET = process.env.WOO_CONSUMER_SECRET;
 
-export async function GET(req: NextRequest, context: { params: { id: string } }) {
-  const { id } = context.params; 
+export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   try {
+    const { id } = params;
+
     const response = await axios.get(`${WOO_BASE_URL}/products/${id}`, {
       auth: {
         username: CONSUMER_KEY!,
         password: CONSUMER_SECRET!,
       },
     });
+
     return NextResponse.json(response.data);
   } catch (error) {
     return NextResponse.json({ error: "Failed to fetch product" }, { status: 500 });
