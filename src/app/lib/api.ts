@@ -1,5 +1,12 @@
-export async function fetchBookings(productId: number) {
+export async function fetchProduct(productId: number) {
+    const res = await fetch(`/api/products/${productId}`);
+    if (!res.ok) throw new Error("Failed to fetch product");
+    return res.json();
+  }
+  
+  export async function fetchBookings(productId: number) {
     const res = await fetch(`/api/bookings?product=${productId}`);
+    if (!res.ok) throw new Error("Failed to fetch bookings");
     return res.json();
   }
   
