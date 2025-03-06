@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const { id } = params;
+    const { id } = await params;
     if (!id) return NextResponse.json({ error: "Missing product ID" }, { status: 400 });
 
     const response = await fetch(`https://cretaluxurycruises.dev6.inglelandi.com/wp-json/wc/v3/products/${id}`, {
