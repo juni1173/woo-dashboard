@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { Card, Typography, Row, Col } from "antd";
+
+const { Title, Text } = Typography;
 
 interface Product {
   id: number;
@@ -56,27 +59,35 @@ export default function Home() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Products</h1>
+      <Title level={2} className="mb-4">Products</Title>
       {Object.entries(categorizedProducts).map(([category, products]) => (
         <div key={category} className="mb-8">
-          <h2 className="text-xl font-semibold mb-2">{category}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Title level={3} className="mb-2">{category}</Title>
+          <Row gutter={[16, 16]}>
             {products.map((product) => (
-              <Link key={product.id} href={`/product/${product.id}`} passHref>
-                <div className="border p-4 rounded-md shadow-md cursor-pointer hover:shadow-lg">
-                  <Image
-                    src={product.images[0]?.src || "/placeholder.jpg"}
-                    alt={product.name}
-                    width={200}
-                    height={200}
-                    className="w-full h-auto"
-                  />
-                  <h2 className="text-lg font-semibold mt-2">{product.name}</h2>
-                  <p className="text-gray-700">€{product.price}</p>
-                </div>
-              </Link>
+              <Col key={product.id} xs={24} sm={12} md={8} lg={6}>
+                <Link href={`/product/${product.id}`} passHref>
+                  <Card
+                    hoverable
+                    cover={
+                      <Image
+                        src={product.images[0]?.src || "/placeholder.jpg"}
+                        alt={product.name}
+                        width={200}
+                        height={200}
+                        className="w-full h-auto"
+                      />
+                    }
+                  >
+                    <Card.Meta
+                      title={product.name}
+                      description={<Text strong>€{product.price}</Text>}
+                    />
+                  </Card>
+                </Link>
+              </Col>
             ))}
-          </div>
+          </Row>
         </div>
       ))}
     </div>
