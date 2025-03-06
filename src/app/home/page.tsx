@@ -34,7 +34,7 @@ export default function Home() {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch("https://woo-dashboard-liart.vercel.app/api/products?per_page=50");
+      const res = await fetch("https://woo-dashboard-liart.vercel.app/api/products");
       if (!res.ok) {
         throw new Error("Failed to fetch products");
       }
