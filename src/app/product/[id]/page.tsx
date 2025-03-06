@@ -9,10 +9,7 @@ import { fetchBookings, updateBooking } from "@/app/lib/api";
 
 const { Title } = Typography;
 
-import { PageProps } from "next";
-
-export default function ProductPage({ params }: PageProps) {
-
+export default function ProductPage({ params }: { params: { id: string } }) {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [boats] = useState<string[]>(["Lady Roula", "Sea Star", "Ocean Dream"]);
 
@@ -37,9 +34,7 @@ export default function ProductPage({ params }: PageProps) {
         selectedDate={selectedDate ? dayjs(selectedDate) : null}
         onSelectDate={(date) => setSelectedDate(date?.format("YYYY-MM-DD") || null)}
       />
-      {selectedDate && (
-        <BookingForm boats={boats} selectedDate={selectedDate} onBook={handleBook} onUnbook={handleUnbook} />
-      )}
+      {selectedDate && <BookingForm boats={boats} selectedDate={selectedDate} onBook={handleBook} onUnbook={handleUnbook} />}
     </div>
   );
 }
