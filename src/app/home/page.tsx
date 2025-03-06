@@ -1,14 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface Product {
   id: number;
   name: string;
+  permalink: string;
   price: string;
-  image: string;
+  images: { src: string }[];
 }
 
 export default function Home() {
@@ -38,21 +40,23 @@ export default function Home() {
   };
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold">WooCommerce Products</h1>
-      <div className="grid grid-cols-3 gap-4">
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">Products</h1>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {products.map((product) => (
-          <div key={product.id} className="border p-4 rounded-lg shadow">
-            <Image
-              src={product.image}
-              alt={product.name}
-              width={200}
-              height={200}
-              className="rounded"
-            />
-            <h2 className="text-lg font-semibold">{product.name}</h2>
-            <p className="text-gray-600">${product.price}</p>
-          </div>
+          <Link key={product.id} href={`/product/${product.id}`} passHref>
+            <div className="border p-4 rounded-md shadow-md cursor-pointer hover:shadow-lg">
+              <Image
+                src={product.images[0]?.src || "/placeholder.jpg"}
+                alt={product.name}
+                width={200}
+                height={200}
+                className="w-full h-auto"
+              />
+              <h2 className="text-lg font-semibold mt-2">{product.name}</h2>
+              <p className="text-gray-700">${product.price}</p>
+            </div>
+          </Link>
         ))}
       </div>
     </div>
