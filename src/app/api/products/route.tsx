@@ -13,7 +13,7 @@ export async function GET() {
         password: CONSUMER_SECRET,
       },
     });
-
+    console.warn(response);
     return NextResponse.json(response.data);
   } catch (error) {
     return NextResponse.json({ error: `Failed to fetch products. ${error}` }, { status: 500 });
