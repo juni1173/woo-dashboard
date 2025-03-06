@@ -11,6 +11,7 @@ interface Product {
   permalink: string;
   price: string;
   images: { src: string }[];
+  status: string;
 }
 
 export default function Home() {
@@ -33,7 +34,8 @@ export default function Home() {
         throw new Error("Failed to fetch products");
       }
       const data: Product[] = await res.json();
-      setProducts(data);
+      const activeProducts = data.filter((product) => product.status === "publish");
+      setProducts(activeProducts);
     } catch (err) {
       console.error("Error fetching products", err);
     }
@@ -54,7 +56,7 @@ export default function Home() {
                 className="w-full h-auto"
               />
               <h2 className="text-lg font-semibold mt-2">{product.name}</h2>
-              <p className="text-gray-700">${product.price}</p>
+              <p className="text-gray-700">€{product.price}</p>
             </div>
           </Link>
         ))}
