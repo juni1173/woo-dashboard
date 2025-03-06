@@ -1,38 +1,72 @@
-"use client"; 
+"use client";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button, message } from "antd";
+import axios from "axios";
+import { Card, Row, Col, Spin, Button, message } from "antd";
 
 export default function Home() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+
     if (!token) {
-      message.warning("Session expired. Redirecting to login...");
       router.push("/login");
-    } else {
-      setIsAuthenticated(true);
+      return;
     }
-  }, [router]);
+
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get("/api/products");
+      setProducts(response.data);
+    } catch (error) {
+      message.error("Failed to load products.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    message.success("Logged out successfully!");
     router.push("/login");
   };
 
-  if (!isAuthenticated) return null; // Prevent UI flickering before redirect
-
   return (
-    <div style={{ maxWidth: 600, margin: "50px auto", padding: 20 }}>
-      <h2>Welcome to Home Page</h2>
-      <p>You are successfully logged in.</p>
-      <Button type="primary" onClick={handleLogout}>
-        Logout
-      </Button>
+    <div style={{ padding: "20px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <h1>WooCommerce Products</h1>
+        <Button type="primary" danger onClick={handleLogout}>
+          Logout
+        </Button>
+      </div>
+
+      {loading ? (
+        <Spin size="large" style={{ display: "block", margin: "50px auto" }} />
+      ) : (
+        <Row gutter={[16, 16]}>
+          {products.length > 0 ? (
+            products.map((product: any) => (
+              <Col key={product.id} xs={24} sm={12} md={8} lg={6}>
+                <Card
+                  hoverable
+                  title={product.name}
+                  cover={<img alt={product.name} src={product.images[0]?.src} />}
+                >
+                  <p><strong>Price:</strong> ${product.price}</p>
+                </Card>
+              </Col>
+            ))
+          ) : (
+            <p>No products available.</p>
+          )}
+        </Row>
+      )}
     </div>
   );
 }
