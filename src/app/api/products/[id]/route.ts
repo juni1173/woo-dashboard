@@ -1,23 +1,24 @@
-import { NextRequest, NextResponse } from "next/server";
-import axios from "axios";
+import { NextResponse } from "next/server";
 
-const WOO_BASE_URL = "https://cretaluxurycruises.dev6.inglelandi.com/wp-json/wc/v3";
-const CONSUMER_KEY = process.env.WOO_CONSUMER_KEY;
-const CONSUMER_SECRET = process.env.WOO_CONSUMER_SECRET;
-
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: Request, { params }: { params: { id: string } }) {
   try {
     const { id } = params;
+    if (!id) return NextResponse.json({ error: "Missing product ID" }, { status: 400 });
 
-    const response = await axios.get(`${WOO_BASE_URL}/products/${id}`, {
-      auth: {
-        username: CONSUMER_KEY!,
-        password: CONSUMER_SECRET!,
+    const response = await fetch(`https://cretaluxurycruises.dev6.inglelandi.com/wp-json/wc/v3/products/${id}`, {
+      headers: {
+        Authorization: `Basic ${btoa(process.env.CONSUMER_KEY + ":" + process.env.CONSUMER_SECRET)}`,
       },
     });
 
-    return NextResponse.json(response.data);
+    if (!response.ok) {
+      return NextResponse.json({ error: "Product not found" }, { status: response.status });
+    }
+
+    const product = await response.json();
+    return NextResponse.json(product);
   } catch (error) {
-    return NextResponse.json({ error: "Failed to fetch product" }, { status: 500 });
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
+
