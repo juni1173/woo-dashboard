@@ -10,7 +10,6 @@ import { fetchBookings, updateBooking } from "@/app/lib/api";
 const { Title } = Typography;
 
 export default function ProductPage({ params }: { params: { id: string } }) {
-  //const router = useRouter();
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [boats] = useState<string[]>(["Lady Roula", "Sea Star", "Ocean Dream"]);
 
@@ -32,10 +31,9 @@ export default function ProductPage({ params }: { params: { id: string } }) {
     <div className="container mx-auto p-4">
       <Title level={2}>Booking for Product {params.id}</Title>
       <BookingCalendar
-            selectedDate={selectedDate ? dayjs(selectedDate) : null}
-            onSelectDate={(date) => setSelectedDate(date?.format("YYYY-MM-DD") || null)}
-            />
-
+        selectedDate={selectedDate ? dayjs(selectedDate) : null}
+        onSelectDate={(date) => setSelectedDate(date?.format("YYYY-MM-DD") || null)}
+      />
       {selectedDate && (
         <BookingForm boats={boats} selectedDate={selectedDate} onBook={handleBook} onUnbook={handleUnbook} />
       )}
