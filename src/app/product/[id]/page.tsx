@@ -6,16 +6,17 @@ import { Typography } from "antd";
 import BookingCalendar from "@/app/components/Calendar";
 import BookingForm from "@/app/components/BookingForm";
 import { fetchBookings, updateBooking } from "@/app/lib/api";
+import { PageProps } from 'next/types'; // Import PageProps
 
 const { Title } = Typography;
 
-interface PageParams {
+interface MyPageParams {
   params: {
     id: string;
   };
 }
 
-export default function ProductPage({ params }: PageParams) {
+export default function ProductPage({ params }: MyPageParams & PageProps) { //use intersection type.
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [boats] = useState<string[]>(["Lady Roula", "Sea Star", "Ocean Dream"]);
 
