@@ -6,37 +6,34 @@ import { Typography } from "antd";
 import BookingCalendar from "@/app/components/Calendar";
 import BookingForm from "@/app/components/BookingForm";
 import { fetchBookings, updateBooking } from "@/app/lib/api";
-import { PageProps } from 'next/types'; // Import PageProps
 
 const { Title } = Typography;
 
-interface MyPageParams {
-  params: {
-    id: string;
-  };
-}
-
-export default function ProductPage({ params }: MyPageParams & PageProps) { //use intersection type.
+export default async function ProductPage({
+    params,
+  }: {
+    params: Promise<{ id: string }>
+  }) { //use intersection type.
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [boats] = useState<string[]>(["Lady Roula", "Sea Star", "Ocean Dream"]);
-
+  const { id } = await params
   useEffect(() => {
-    fetchBookings(Number(params.id));
-  }, [params.id]);
+    fetchBookings(Number(id));
+  }, [id]);
 
   const handleBook = (boat: string, slot: string) => {
     if (!selectedDate) return;
-    updateBooking(Number(params.id), selectedDate, boat, slot, false);
+    updateBooking(Number(id), selectedDate, boat, slot, false);
   };
 
   const handleUnbook = (boat: string, slot: string) => {
     if (!selectedDate) return;
-    updateBooking(Number(params.id), selectedDate, boat, slot, true);
+    updateBooking(Number(id), selectedDate, boat, slot, true);
   };
-
+  
   return (
     <div className="container mx-auto p-4">
-      <Title level={2}>Booking for Product {params.id}</Title>
+      <Title level={2}>Booking for Product {id}</Title>
       <BookingCalendar
         selectedDate={selectedDate ? dayjs(selectedDate) : null}
         onSelectDate={(date) => setSelectedDate(date?.format("YYYY-MM-DD") || null)}
